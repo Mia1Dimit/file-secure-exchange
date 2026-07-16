@@ -1,0 +1,146 @@
+variable "applicationid" {
+  description = "Application ID for tagging"
+  type        = string
+}
+
+variable "applicationname" {
+  description = "Application name for tagging"
+  type        = string
+}
+
+variable "environment" {
+  description = "Environment name (dev, staging, prod)"
+  type        = string
+}
+
+variable "iam_roles" {
+  description = "IAM role configurations"
+  type = map(object({
+    name               = string
+    assume_role_policy = string
+    specifictags       = optional(map(string), {})
+    policies = optional(map(object({
+      name   = string
+      policy = string
+    })), {})
+    managed_policies = optional(map(object({
+      policy_arn = string
+    })), {})
+  }))
+  default = {}
+}
+
+variable "lambda_functions" {
+  description = "Lambda function configurations"
+  type = map(object({
+    name                  = string
+    handler               = string
+    runtime               = string
+    timeout               = optional(number, 30)
+    memory_size           = optional(number, 128)
+    environment_variables = optional(map(string), {})
+    source_dir            = string
+    output_path           = string
+    vpc_config = optional(object({
+      subnet_ids         = list(string)
+      security_group_ids = list(string)
+    }))
+  }))
+  default = {}
+}
+
+variable "lambda_permissions" {
+  description = "Lambda permission configurations for S3 and other triggers"
+  type = map(object({
+    function_name = string
+    statement_id  = optional(string)
+    action        = optional(string, "lambda:InvokeFunction")
+    principal     = string
+    source_arn    = string
+  }))
+  default = {}
+}
+
+
+variable "s3s" {
+  type = map(object({
+    name                  = string
+    blockpublicacls       = bool
+    blockpublicpolicy     = bool
+    ignorepublicacls      = bool
+    restrictpublicbuckets = bool
+    environment           = string
+    enable_versioning     = string
+    rules = map(object({
+      id     = string
+      status = string
+      expiration = optional(map(object({
+        date = optional(string)
+        days = optional(number)
+      })))
+      transition = optional(map(object({
+        date          = optional(string)
+        days          = optional(number)
+        storage_class = string
+      })))
+      filters = optional(map(object({
+        prefix                   = optional(string)
+        object_size_greater_than = optional(number)
+        object_size_less_than    = optional(number)
+      })))
+    }))
+    notifications = map(object({
+      lambda_function = list(object({
+        id                  = optional(string)
+        lambda_function_arn = string
+        events              = list(string)
+        filter_prefix       = optional(string)
+        filter_suffix       = optional(string)
+      }))
+    }))
+    replication_role = optional(string)
+    replication_rules = list(object({
+      id     = optional(string)
+      status = string
+      destination = object({
+        bucket = string
+      })
+    }))
+    specifictags = map(string)
+  }))
+}
+
+variable "dynamodb_tables" {
+  description = "DynamoDB table configurations"
+  type = map(object({
+    table_name   = string
+    hash_key     = string
+    range_key    = optional(string)
+    billing_mode = optional(string, "PAY_PER_REQUEST")
+    global_secondary_indexes = optional(list(object({
+      name               = string
+      hash_key           = string
+      range_key          = optional(string)
+      projection_type    = optional(string)
+      non_key_attributes = optional(list(string))
+      read_capacity      = optional(number)
+      write_capacity     = optional(number)
+    })), [])
+    enable_point_in_time_recovery = optional(bool, false)
+    ttl_attribute_name            = optional(string)
+  }))
+  default = {}
+}
+
+variable "eventbridge_schedulers" {
+  description = "EventBridge Scheduler configurations"
+  type = map(object({
+    name                      = string
+    schedule_expression       = string
+    target_lambda_key         = string # Key of the lambda function to target
+    input                     = optional(string)
+    flexible_time_window_mode = optional(string, "OFF")
+    state                     = optional(string, "ENABLED")
+  }))
+  default = {}
+}
