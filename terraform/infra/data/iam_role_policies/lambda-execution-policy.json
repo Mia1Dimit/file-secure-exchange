@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:eu-central-1:*:log-group:/aws/lambda/fse-*:*"
+    },
+    {
+      "Sid": "S3DocumentsBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:GetObjectAttributes"
+      ],
+      "Resource": "arn:aws:s3:::fse-documents-*/*"
+    },
+    {
+      "Sid": "S3PresignedUrlGeneration",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::fse-documents-*"
+    },
+    {
+      "Sid": "DynamoDBDocumentsTable",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:eu-central-1:*:table/fse-documents-*",
+        "arn:aws:dynamodb:eu-central-1:*:table/fse-documents-*/index/*"
+      ]
+    },
+    {
+      "Sid": "DynamoDBAccessLogTable",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:Query"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:eu-central-1:*:table/fse-access-log-*",
+        "arn:aws:dynamodb:eu-central-1:*:table/fse-access-log-*/index/*"
+      ]
+    }
+  ]
+}

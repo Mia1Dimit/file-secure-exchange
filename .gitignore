@@ -1,0 +1,27 @@
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+*.tfplan
+*.tfplan.binary
+tfplan.json
+*.tfstate
+*.tfstate.backup
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Lambda build artifacts
+lambdas/**/__pycache__/
+lambdas/**/*.pyc
+lambdas/**/.pytest_cache/
+/tmp/*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp
+*.swo
