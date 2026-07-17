@@ -50,8 +50,13 @@ deny contains msg if {
 	)
 }
 
-has_public_access_block(bucket_address) if {
+deny contains msg if {
 	some resource in input.terraform_plan.resource_changes
-	resource.type == "aws_s3_bucket_public_access_block"
-	resource.change.after.bucket == bucket_address
+	resource.type == "aws_s3_bucket"
+	not has_public_access_block(resource)
+
+	msg := sprintf(
+		"deny-public-s3: %s has no aws_s3_bucket_public_access_block resource attached — every document bucket must explicitly block public access",
+		[resource.address],
+	)
 }
