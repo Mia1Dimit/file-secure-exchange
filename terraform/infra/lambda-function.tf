@@ -1,13 +1,7 @@
 locals {
-  # Build environment variables with actual runtime ARN from deployed module
+  # Pass through environment variables from the variable config
   lambda_env_vars = {
-    for key, lambda_config in var.lambda_functions : key => merge(
-      lambda_config.environment_variables,
-      {
-        # Inject actual agent runtime ARN from module output
-        AGENTCORE_RUNTIME_ARN = try(module.agent-runtime["document_classifier"].agent_runtime_arn, lambda_config.environment_variables.AGENTCORE_RUNTIME_ARN)
-      }
-    )
+    for key, lambda_config in var.lambda_functions : key => lambda_config.environment_variables
   }
 }
 
@@ -31,5 +25,5 @@ module "lambda_function" {
   environment     = var.environment
   specifictags    = {}
 
-  depends_on = [module.aws-iam-role, module.agent-runtime]
+  depends_on = [module.aws-iam-role]
 }
