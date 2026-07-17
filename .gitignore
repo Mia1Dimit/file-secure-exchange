@@ -25,3 +25,6 @@ Thumbs.db
 .vscode/settings.json
 *.swp
 *.swo
+
+ADVANCED_PLAN.md
+status.md

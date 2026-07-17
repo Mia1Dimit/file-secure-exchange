@@ -99,12 +99,10 @@ jobs:
 
       # ── 5. Policy gate ──────────────────────────────────────────────────
       # evaluate-terraform-policies evaluates policies/
-      # The step is a no-op until .rego files are committed; set
-      # continue-on-error: false once policies are in place.
       - name: Evaluate Terraform policies
         uses: serenis-health/evaluate-terraform-policies@v1
         id: evaluate-terraform-policies
-        continue-on-error: true
+        continue-on-error: false
         with:
           policy-files: head/policies
           plan-file-path: head/${{ env.TF_ROOT }}/plan.json
@@ -115,7 +113,7 @@ jobs:
       - name: Infracost Breakdown
         uses: infracost/actions/diff@v4
         with:
-          api-key: ${{ secrets.INFRACOST_API_KEY }}
+          api-key: ${{ secrets.INFRACOST_API_KEY_FILE_X }}
           base-path: base
           head-path: head
 

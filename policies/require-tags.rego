@@ -4,8 +4,14 @@ import rego.v1
 
 # Policy 5: Require Mandatory Tags
 #
-# Reasoning: ownership, environment, and sensitivity classification should be
-# queryable from the infrastructure layer itself, not tribal knowledge.
+# Enforced keys: Application_ID, Application_Name, Environment, Name
+# These are set by every module's local.common_tags block and are the
+# authoritative ownership/environment signals on this platform.
+#
+# Reasoning: Application_ID, Application_Name, Environment, and Name must be
+# present on every managed resource so that cost attribution, environment
+# isolation, and ownership are queryable directly from the infrastructure
+# layer — not from tribal knowledge.
 # ---------------------------------------------------------------------------
 
 required_tags := ["Application_ID", "Application_Name", "Environment", "Name"]
