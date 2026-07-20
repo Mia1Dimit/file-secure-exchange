@@ -1,0 +1,4 @@
+# boto3 and botocore ship pre-installed in the AWS Lambda Python 3.12
+# runtime — not vendored into this zip. Listed here for local dev/testing
+# only (e.g. running the handler under pytest outside Lambda).
+boto3>=1.34

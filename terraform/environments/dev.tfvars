@@ -63,7 +63,7 @@ dynamodb_tables = {
         projection_type = "ALL"
       }
     ]
-    enable_point_in_time_recovery = true
+    enable_point_in_time_recovery = false
     ttl_attribute_name            = "expires_at"
   }
   access_log = {
@@ -77,7 +77,7 @@ dynamodb_tables = {
         projection_type = "ALL"
       }
     ]
-    enable_point_in_time_recovery = false
+    enable_point_in_time_recovery = true
     ttl_attribute_name            = null
   }
 }
@@ -101,7 +101,24 @@ cognito_user_pools = {
 }
 
 # ─── Lambda Functions (Phase 2) ───────────────────────────────────────────────
-lambda_functions = {}
+lambda_functions = {
+  presign_broker = {
+    name        = "fse-presign-broker-dev"
+    handler     = "index.handler"
+    runtime     = "python3.12"
+    timeout     = 10
+    memory_size = 128
+    source_dir  = "../../lambdas/presign-handler"
+    output_path = "/tmp/lambda-builds/presign-handler.zip"
+    vpc_config  = null
+    environment_variables = {
+      DOCUMENTS_TABLE        = "fse-documents-dev"
+      ACCESS_LOG_TABLE       = "fse-access-log-dev"
+      DOCUMENTS_BUCKET       = "fse-documents-dev"
+      PRESIGN_EXPIRY_SECONDS = "300"
+    }
+  }
+}
 
 # ─── Lambda Permissions (Phase 2) ────────────────────────────────────────────
 lambda_permissions = {}
