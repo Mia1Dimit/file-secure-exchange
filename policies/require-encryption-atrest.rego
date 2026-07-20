@@ -47,12 +47,6 @@ deny contains msg if {
 	)
 }
 
-has_encryption_config(bucket_address) if {
-	some resource in input.terraform_plan.resource_changes
-	resource.type == "aws_s3_bucket_server_side_encryption_configuration"
-	resource.change.after.bucket == bucket_address
-}
-
 deny contains msg if {
 	some resource in input.terraform_plan.resource_changes
 	resource.type == "aws_dynamodb_table"
