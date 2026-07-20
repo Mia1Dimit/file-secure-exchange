@@ -63,7 +63,7 @@ module "s3" {
 # customer-managed keys land in Phase 4.
 module "s3-sse" {
   for_each      = var.s3s
-  source        = "../modules/s3-sse-config"
+  source        = "../modules/s3-bucket-sse-config"
   bucket_name   = module.s3[each.key].s3-id
   sse_algorithm = "AES256"
   kms_key_id    = null
