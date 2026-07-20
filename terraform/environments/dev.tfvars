@@ -63,7 +63,7 @@ dynamodb_tables = {
         projection_type = "ALL"
       }
     ]
-    enable_point_in_time_recovery = false
+    enable_point_in_time_recovery = true
     ttl_attribute_name            = "expires_at"
   }
   access_log = {
