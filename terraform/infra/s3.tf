@@ -62,9 +62,9 @@ module "s3" {
 # MVP baseline is SSE-S3 (AES256). Switch sse_algorithm to "aws:kms" + set kms_key_id once
 # customer-managed keys land in Phase 4.
 module "s3-sse" {
-  for_each   = var.s3s
-  source     = "../modules/s3-sse-config"
-  bucket_name = module.s3[each.key].s3-id
+  for_each      = var.s3s
+  source        = "../modules/s3-sse-config"
+  bucket_name   = module.s3[each.key].s3-id
   sse_algorithm = "AES256"
   kms_key_id    = null
 
