@@ -144,3 +144,63 @@ variable "eventbridge_schedulers" {
   }))
   default = {}
 }
+
+variable "kms_keys" {
+  description = "KMS key configurations"
+  type = map(object({
+    description                        = optional(string, "Customer managed KMS key")
+    key_usage                          = optional(string, "ENCRYPT_DECRYPT")
+    customer_master_key_spec           = optional(string, "SYMMETRIC_DEFAULT")
+    bypass_policy_lockout_safety_check = optional(bool, false)
+    deletion_window_in_days            = optional(number, 30)
+    enable_key_rotation                = optional(bool, true)
+    is_enabled                         = optional(bool, true)
+    multi_region                       = optional(bool, false)
+    policy                             = optional(string)
+    alias_name                         = optional(string)
+    purpose                            = optional(string, "Encryption")
+    specifictags                       = optional(map(string), {})
+  }))
+  default = {}
+}
+
+variable "waf_web_acls" {
+  description = "WAFv2 Web ACL configurations"
+  type = map(object({
+    web_acl_name              = string
+    description               = optional(string)
+    scope                     = optional(string, "REGIONAL")
+    default_action            = optional(string, "allow")
+    enable_cloudwatch_metrics = optional(bool, true)
+    enable_sampled_requests   = optional(bool, true)
+    metric_name               = optional(string, "waf-web-acl")
+    resource_arn              = optional(string)
+    purpose                   = optional(string, "Web application protection")
+    specifictags              = optional(map(string), {})
+    managed_rule_groups = optional(list(object({
+      name                    = string
+      priority                = number
+      managed_rule_group_name = string
+      vendor_name             = string
+      metric_name             = string
+      override_action         = optional(string, "none")
+      version                 = optional(string)
+    })), [])
+  }))
+  default = {}
+}
+
+variable "cognito_user_pools" {
+  description = "Cognito User Pool configurations"
+  type = map(object({
+    pool_name            = string
+    app_client_name      = string
+    domain_prefix        = optional(string, "")
+    callback_urls        = optional(list(string), [])
+    logout_urls          = optional(list(string), [])
+    allowed_oauth_flows  = optional(list(string), ["code"])
+    allowed_oauth_scopes = optional(list(string), ["email", "openid", "profile"])
+    specifictags         = optional(map(string), {})
+  }))
+  default = {}
+}
