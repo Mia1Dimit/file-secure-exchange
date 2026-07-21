@@ -66,10 +66,10 @@ locals {
           value = merge(
             { api_id = module.api_definitions[api_key].api_id },
             a,
-            a.cognito_key != null ? {
-              jwt_issuer   = "https://cognito-idp.${data.aws_region.current.region}.amazonaws.com/${module.cognito_user_pool[a.cognito_key].user_pool_id}"
-              jwt_audience = [module.cognito_user_pool[a.cognito_key].app_client_id]
-            } : {}
+            {
+              jwt_issuer   = a.cognito_key != null ? "https://cognito-idp.${data.aws_region.current.region}.amazonaws.com/${module.cognito_user_pool[a.cognito_key].user_pool_id}" : a.jwt_issuer
+              jwt_audience = a.cognito_key != null ? [module.cognito_user_pool[a.cognito_key].app_client_id] : a.jwt_audience
+            }
           )
         }
       ]
