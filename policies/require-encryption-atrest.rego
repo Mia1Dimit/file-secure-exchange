@@ -37,14 +37,23 @@ deny contains msg if {
 }
 
 deny contains msg if {
-	some resource in input.terraform_plan.resource_changes
-	resource.type == "aws_s3_bucket"
-	not has_encryption_config(resource.address)
+	some bucket in input.terraform_plan.resource_changes
+	bucket.type == "aws_s3_bucket"
+
+	not has_encryption_config(bucket)
 
 	msg := sprintf(
 		"require-encryption: %s has no server-side encryption configuration attached",
-		[resource.address],
+		[bucket.address],
 	)
+}
+
+has_encryption_config(bucket) if {
+	some encryption in input.terraform_plan.resource_changes
+
+	encryption.type == "aws_s3_bucket_server_side_encryption_configuration"
+
+	encryption.change.after.bucket == bucket.change.after.bucket
 }
 
 deny contains msg if {
