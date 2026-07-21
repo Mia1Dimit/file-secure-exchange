@@ -121,6 +121,10 @@ module "api_authorizers" {
   identity_sources = each.value.identity_sources
   jwt_audience     = each.value.jwt_audience
   jwt_issuer       = each.value.jwt_issuer
+
+  environment     = var.environment
+  applicationname = var.applicationname
+  applicationid   = var.applicationid
 }
 
 module "api_integrations" {
