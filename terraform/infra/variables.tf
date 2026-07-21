@@ -227,15 +227,15 @@ variable "api_gtws" {
       connection_type           = optional(string)
       content_handling_strategy = optional(string)
       credentials_arn           = optional(string)
-      description                = optional(string)
-      integration_method         = optional(string)
-      integration_subtype        = optional(string)
-      integration_uri            = optional(string)
-      lambda_key                 = optional(string) # Key to lookup Lambda invoke ARN
-      passthrough_behavior       = optional(string)
-      payload_format_version     = optional(string)
-      request_parameters         = optional(map(string))
-      request_templates          = optional(map(string))
+      description               = optional(string)
+      integration_method        = optional(string)
+      integration_subtype       = optional(string)
+      integration_uri           = optional(string)
+      lambda_key                = optional(string) # Key to lookup Lambda invoke ARN
+      passthrough_behavior      = optional(string)
+      payload_format_version    = optional(string)
+      request_parameters        = optional(map(string))
+      request_templates         = optional(map(string))
       response_parameters = optional(list(object({
         mappings    = map(string)
         status_code = string
@@ -261,20 +261,20 @@ variable "api_gtws" {
     routes = map(object({
       route_key                  = string
       integration_key            = optional(string) # Key to lookup integration
-      authorizer_key              = optional(string) # Key to lookup authorizer — resolves to authorizer_id
-      api_key_required            = optional(bool)
-      authorization_scopes        = optional(list(string))
-      authorization_type          = optional(string)
-      authorizer_id                = optional(string) # kept for direct/manual use if ever needed
-      model_selection_expression  = optional(string)
-      operation_name              = optional(string)
-      request_models               = optional(map(string))
+      authorizer_key             = optional(string) # Key to lookup authorizer — resolves to authorizer_id
+      api_key_required           = optional(bool)
+      authorization_scopes       = optional(list(string))
+      authorization_type         = optional(string)
+      authorizer_id              = optional(string) # kept for direct/manual use if ever needed
+      model_selection_expression = optional(string)
+      operation_name             = optional(string)
+      request_models             = optional(map(string))
       request_parameters = optional(list(object({
         request_parameter_key = string
-        required               = bool
+        required              = bool
       })))
       route_response_selection_expression = optional(string)
-      target                               = optional(string)
+      target                              = optional(string)
     }))
     stages = map(object({
       name                  = string
@@ -282,7 +282,7 @@ variable "api_gtws" {
       client_certificate_id = optional(string)
       deployment_id         = optional(string)
       description           = optional(string)
-      stage_variables        = optional(map(string))
+      stage_variables       = optional(map(string))
       access_log_settings = optional(object({
         destination_arn = string
         format          = string
@@ -290,22 +290,22 @@ variable "api_gtws" {
       default_route_settings = optional(object({
         data_trace_enabled       = optional(bool)
         detailed_metrics_enabled = optional(bool)
-        logging_level             = optional(string)
-        throttling_burst_limit    = optional(number)
-        throttling_rate_limit     = optional(number)
+        logging_level            = optional(string)
+        throttling_burst_limit   = optional(number)
+        throttling_rate_limit    = optional(number)
       }))
       route_settings = optional(object({
         route_key                = string
         data_trace_enabled       = optional(bool)
         detailed_metrics_enabled = optional(bool)
-        logging_level             = optional(string)
-        throttling_burst_limit    = optional(number)
-        throttling_rate_limit     = optional(number)
+        logging_level            = optional(string)
+        throttling_burst_limit   = optional(number)
+        throttling_rate_limit    = optional(number)
       }))
       specifictags = optional(map(string))
-      environment   = optional(string)
+      environment  = optional(string)
     }))
     specifictags = optional(map(string))
-    environment   = optional(string)
+    environment  = optional(string)
   }))
 }

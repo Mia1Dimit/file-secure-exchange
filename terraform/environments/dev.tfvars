@@ -144,9 +144,9 @@ api_gtws = {
       presign_broker = {
         integration_type       = "AWS_PROXY"
         integration_method     = "POST" # required for AWS_PROXY to Lambda
-        lambda_key              = "presign_broker"
-        payload_format_version  = "2.0"
-        timeout_milliseconds    = 10000
+        lambda_key             = "presign_broker"
+        payload_format_version = "2.0"
+        timeout_milliseconds   = 10000
       }
     }
 
@@ -162,13 +162,13 @@ api_gtws = {
         route_key          = "POST /documents"
         integration_key    = "presign_broker"
         authorization_type = "JWT"
-        authorizer_key      = "cognito_jwt"
+        authorizer_key     = "cognito_jwt"
       }
       download = {
         route_key          = "GET /documents/{document_id}/download"
         integration_key    = "presign_broker"
         authorization_type = "JWT"
-        authorizer_key      = "cognito_jwt"
+        authorizer_key     = "cognito_jwt"
       }
     }
 

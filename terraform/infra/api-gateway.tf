@@ -129,13 +129,13 @@ module "api_integrations" {
 
   depends_on = [module.lambda, module.api_definitions]
 
-  api_id                  = each.value.api_id
-  integration_type        = each.value.integration_type
-  integration_method      = each.value.integration_method
-  integration_uri         = each.value.integration_uri
-  payload_format_version  = each.value.payload_format_version
-  timeout_milliseconds    = each.value.timeout_milliseconds
-  description             = each.value.description
+  api_id                 = each.value.api_id
+  integration_type       = each.value.integration_type
+  integration_method     = each.value.integration_method
+  integration_uri        = each.value.integration_uri
+  payload_format_version = each.value.payload_format_version
+  timeout_milliseconds   = each.value.timeout_milliseconds
+  description            = each.value.description
 }
 
 module "api_routes" {
@@ -144,11 +144,11 @@ module "api_routes" {
 
   depends_on = [module.api_integrations, module.api_authorizers]
 
-  api_id              = each.value.api_id
-  route_key           = each.value.route_key
-  target              = "integrations/${module.api_integrations[each.value.integration_key].id}"
-  authorization_type  = each.value.authorization_type
-  authorizer_id       = try(each.value.authorizer_id, null)
+  api_id             = each.value.api_id
+  route_key          = each.value.route_key
+  target             = "integrations/${module.api_integrations[each.value.integration_key].id}"
+  authorization_type = each.value.authorization_type
+  authorizer_id      = try(each.value.authorizer_id, null)
 }
 
 module "api_stages" {
