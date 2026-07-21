@@ -33,7 +33,7 @@ locals {
             # cannot hold a computed resource ID directly, same reason
             # lambda_key exists for integrations above.
             r.authorizer_key != null ? {
-              authorizer_id = module.api_authorizers[r.authorizer_key].authorizer_id
+              authorizer_id = module.api_authorizers[r.authorizer_key].id
             } : {}
           )
         }
