@@ -13,7 +13,7 @@ locals {
             int,
             # Resolve lambda_key to invoke ARN if lambda_key is provided
             int.lambda_key != null ? {
-              integration_uri = module.lambda-function[int.lambda_key].lambda_function_invoke_arn
+              integration_uri = module.lambda_function[int.lambda_key].lambda_function_invoke_arn
             } : {}
           )
         }
@@ -95,7 +95,7 @@ module "api_definitions" {
   for_each = var.api_gtws
   source   = "../modules/api-gatewayv2-api"
 
-  depends_on = [module.lambda-function]
+  depends_on = [module.lambda_function]
 
   name          = each.value.name
   protocol_type = each.value.protocol_type
@@ -131,7 +131,7 @@ module "api_integrations" {
   for_each = local.integrations
   source   = "../modules/api-gatewayv2-integration"
 
-  depends_on = [module.lambda-function, module.api_definitions]
+  depends_on = [module.lambda_function, module.api_definitions]
 
   api_id                 = each.value.api_id
   integration_type       = each.value.integration_type
@@ -183,7 +183,7 @@ module "api_gateway_lambda_permissions" {
 
   statement_id  = "AllowAPIGatewayInvoke-${each.key}"
   action        = "lambda:InvokeFunction"
-  function_name = module.lambda-function[each.key].lambda_function_name
+  function_name = module.lambda_function[each.key].lambda_function_name
   principal     = "apigateway.amazonaws.com"
 
   # Allow any stage/route of this API to invoke Lambda (execute-api ARN,
