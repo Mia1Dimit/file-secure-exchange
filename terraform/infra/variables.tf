@@ -38,6 +38,7 @@ variable "lambda_functions" {
     runtime               = string
     timeout               = optional(number, 30)
     memory_size           = optional(number, 128)
+    architectures         = optional(list(string), ["arm64"])
     environment_variables = optional(map(string), {})
     source_dir            = string
     output_path           = string
