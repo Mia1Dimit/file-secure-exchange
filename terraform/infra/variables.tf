@@ -205,3 +205,107 @@ variable "cognito_user_pools" {
   }))
   default = {}
 }
+
+variable "api_gtws" {
+  description = "Map of API definitions"
+  type = map(object({
+    name                         = string
+    protocol_type                = string
+    api_key_selection_expression = optional(string)
+    credentials_arn              = optional(string)
+    description                  = optional(string)
+    disable_execute_api_endpoint = optional(bool)
+    route_key                    = optional(string)
+    route_selection_expression   = optional(string)
+    target                       = optional(string)
+    api_version                  = optional(string)
+    body                         = optional(string)
+    fail_on_warnings             = optional(bool)
+    integrations = map(object({
+      integration_type          = string
+      connection_id             = optional(string)
+      connection_type           = optional(string)
+      content_handling_strategy = optional(string)
+      credentials_arn           = optional(string)
+      description                = optional(string)
+      integration_method         = optional(string)
+      integration_subtype        = optional(string)
+      integration_uri            = optional(string)
+      lambda_key                 = optional(string) # Key to lookup Lambda invoke ARN
+      passthrough_behavior       = optional(string)
+      payload_format_version     = optional(string)
+      request_parameters         = optional(map(string))
+      request_templates          = optional(map(string))
+      response_parameters = optional(list(object({
+        mappings    = map(string)
+        status_code = string
+      })))
+      template_selection_expression = optional(string)
+      timeout_milliseconds          = optional(number)
+      tls_config = optional(object({
+        server_name_to_verify = optional(string)
+      }))
+    }))
+    # JWT authorizers for this API. cognito_key resolves jwt_issuer/jwt_audience
+    # against var.cognito_user_pools in apigateway.tf's locals.authorizers —
+    # set jwt_issuer/jwt_audience directly instead if this authorizer isn't
+    # backed by a Cognito pool managed in this same tfvars file.
+    authorizers = optional(map(object({
+      name             = string
+      authorizer_type  = optional(string, "JWT")
+      identity_sources = optional(list(string), ["$request.header.Authorization"])
+      cognito_key      = optional(string)
+      jwt_issuer       = optional(string)
+      jwt_audience     = optional(list(string))
+    })), {})
+    routes = map(object({
+      route_key                  = string
+      integration_key            = optional(string) # Key to lookup integration
+      authorizer_key              = optional(string) # Key to lookup authorizer — resolves to authorizer_id
+      api_key_required            = optional(bool)
+      authorization_scopes        = optional(list(string))
+      authorization_type          = optional(string)
+      authorizer_id                = optional(string) # kept for direct/manual use if ever needed
+      model_selection_expression  = optional(string)
+      operation_name              = optional(string)
+      request_models               = optional(map(string))
+      request_parameters = optional(list(object({
+        request_parameter_key = string
+        required               = bool
+      })))
+      route_response_selection_expression = optional(string)
+      target                               = optional(string)
+    }))
+    stages = map(object({
+      name                  = string
+      auto_deploy           = optional(bool)
+      client_certificate_id = optional(string)
+      deployment_id         = optional(string)
+      description           = optional(string)
+      stage_variables        = optional(map(string))
+      access_log_settings = optional(object({
+        destination_arn = string
+        format          = string
+      }))
+      default_route_settings = optional(object({
+        data_trace_enabled       = optional(bool)
+        detailed_metrics_enabled = optional(bool)
+        logging_level             = optional(string)
+        throttling_burst_limit    = optional(number)
+        throttling_rate_limit     = optional(number)
+      }))
+      route_settings = optional(object({
+        route_key                = string
+        data_trace_enabled       = optional(bool)
+        detailed_metrics_enabled = optional(bool)
+        logging_level             = optional(string)
+        throttling_burst_limit    = optional(number)
+        throttling_rate_limit     = optional(number)
+      }))
+      specifictags = optional(map(string))
+      environment   = optional(string)
+    }))
+    specifictags = optional(map(string))
+    environment   = optional(string)
+  }))
+}
