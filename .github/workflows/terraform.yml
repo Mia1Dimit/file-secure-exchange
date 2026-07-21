@@ -74,9 +74,12 @@ jobs:
             -backend-config="dynamodb_table=${{ secrets.TF_LOCK_TABLE }}" \
             -input=false
 
-      # ── 3. Validate ─────────────────────────────────────────────────────
+      # ── 3. Validate and create Lambda build dir  ──────────────────────────────────────
       - name: Terraform Validate
         run: terraform -chdir=head/${{ env.TF_ROOT }} validate
+
+      - name: Prepare Lambda build dir
+        run: mkdir -p /tmp/lambda-builds
 
       # ── 4. Plan ─────────────────────────────────────────────────────────
       - name: Terraform Plan
