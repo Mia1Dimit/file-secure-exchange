@@ -15,6 +15,7 @@ module "lambda_function" {
   runtime               = each.value.runtime
   timeout               = each.value.timeout
   memory_size           = each.value.memory_size
+  architectures         = each.value.architectures
   environment_variables = local.lambda_env_vars[each.key]
   vpc_config            = each.value.vpc_config
   source_dir            = each.value.source_dir
