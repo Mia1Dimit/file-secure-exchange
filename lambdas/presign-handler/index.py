@@ -573,36 +573,35 @@ def _normalize_event(event: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 def _role_from_claims(claims: dict) -> str:
-
     """
     Extract sender/receiver role from Cognito groups.
+
+    API Gateway HTTP API may expose cognito:groups as:
+        "[sender]"
+    rather than:
+        ["sender"]
     """
 
-    groups = claims.get(
-        "cognito:groups",
-        [],
-    )
+    groups = claims.get("cognito:groups", [])
 
+    if isinstance(groups, str):
+        value = groups.strip()
 
-    if isinstance(
-        groups,
-        str,
-    ):
+        # Handle API Gateway format: "[sender]"
+        if value.startswith("[") and value.endswith("]"):
+            value = value[1:-1]
 
-        groups = groups.split(
-            ",",
-        )
-
+        groups = [
+            group.strip().strip('"').strip("'")
+            for group in value.split(",")
+            if group.strip()
+        ]
 
     if "sender" in groups:
-
         return "sender"
 
-
     if "receiver" in groups:
-
         return "receiver"
-
 
     return "unknown"
 
