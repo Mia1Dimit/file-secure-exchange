@@ -26,6 +26,7 @@ def write_access_log(
     action: str,
     result: str,
     source_ip: str,
+    event_id: str | None = None,
     deny_reason: str | None = None,
 ) -> str:
     """
@@ -35,6 +36,10 @@ def write_access_log(
     result == "denied" so the log is self-explanatory without needing to
     cross-reference application logs.
     """
+
+    if event_id is None:
+        event_id = str(uuid.uuid4())
+
     access_id = str(uuid.uuid4())
     now = int(time.time())
 
@@ -44,6 +49,7 @@ def write_access_log(
         "session_id": session_id,
         "principal_id": principal_id,
         "principal_role": principal_role,
+        "event_id": event_id,
         "action": action,
         "result": result,
         "source_ip": source_ip,
