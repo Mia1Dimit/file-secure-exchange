@@ -201,6 +201,7 @@ variable "cognito_user_pools" {
     logout_urls          = optional(list(string), [])
     allowed_oauth_flows  = optional(list(string), ["code"])
     allowed_oauth_scopes = optional(list(string), ["email", "openid", "profile"])
+    explicit_auth_flows  = optional(list(string), ["ALLOW_USER_PASSWORD_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"])
     specifictags         = optional(map(string), {})
   }))
   default = {}

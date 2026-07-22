@@ -31,6 +31,11 @@ variable "allowed_oauth_scopes" {
   default = ["email", "openid", "profile"]
 }
 
+variable "explicit_auth_flows" {
+  type    = list(string)
+  default = ["ALLOW_USER_PASSWORD_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
+}
+
 variable "environment" {
   type = string
 }

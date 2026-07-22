@@ -94,6 +94,7 @@ cognito_user_pools = {
     logout_urls          = ["https://localhost:3000/logout"]
     allowed_oauth_flows  = ["code"]
     allowed_oauth_scopes = ["email", "openid", "profile"]
+    explicit_auth_flows  = ["ALLOW_USER_PASSWORD_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
     specifictags = {
       Purpose = "User authentication for sender and receiver identities"
     }

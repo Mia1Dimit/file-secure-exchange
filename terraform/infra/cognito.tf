@@ -9,6 +9,7 @@ module "cognito_user_pool" {
   logout_urls          = each.value.logout_urls
   allowed_oauth_flows  = each.value.allowed_oauth_flows
   allowed_oauth_scopes = each.value.allowed_oauth_scopes
+  explicit_auth_flows  = each.value.explicit_auth_flows
   specifictags         = each.value.specifictags
 
   applicationid   = var.applicationid
