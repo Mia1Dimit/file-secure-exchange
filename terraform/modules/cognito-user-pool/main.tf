@@ -10,6 +10,7 @@ resource "aws_cognito_user_pool_client" "cognito_user_pool_client" {
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = var.allowed_oauth_flows
   allowed_oauth_scopes                 = var.allowed_oauth_scopes
+  explicit_auth_flows                  = var.explicit_auth_flows
   callback_urls                        = var.callback_urls
   logout_urls                          = var.logout_urls
   supported_identity_providers         = ["COGNITO"]
