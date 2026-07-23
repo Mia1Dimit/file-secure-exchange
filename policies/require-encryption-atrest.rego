@@ -5,8 +5,8 @@ import rego.v1
 # Policy 2: Require Encryption at Rest
 #
 # Reasoning: explicit encryption-at-rest is table stakes for sensitive
-# documents. Per ADR-0003, the MVP baseline is SSE-S3 (AES256); SSE-KMS is
-# accepted but not yet required. This policy will be tightened to require
+# documents. SSE-KMS is accepted but not yet required.
+# This policy will be tightened to require
 # SSE-KMS specifically once customer-managed keys land in Phase 4 — until
 # then it must not fail against the MVP's actual deployed infrastructure.
 # ---------------------------------------------------------------------------
